@@ -9,3 +9,6 @@ const G_CORE_INPUT_TOUCH_AMOUNT = 20
 const G_CORE_TIME_BASE_FPS = 60
 
 const G_CORE_FONT_DEFAULT_FAMILY = 'Manrope'
+
+const G_DEBUG_INDEX_AMOUNT = 4
+const G_DEBUG_KEYCODE = 'Semicolon'

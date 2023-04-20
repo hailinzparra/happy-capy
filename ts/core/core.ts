@@ -7,6 +7,7 @@ interface Core {
     draw: CoreDraw
     scene: CoreSceneManager
     obj: CoreObjectManager
+    debug: CoreDebug
     runner: CoreRunner
     loader: CoreLoader
     init(canvas_parent: Element): void

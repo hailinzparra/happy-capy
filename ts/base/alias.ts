@@ -7,7 +7,7 @@ const {
     draw,
     scene,
     obj,
-    // debug,
+    debug,
     runner,
     loader,
 } = core

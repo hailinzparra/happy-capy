@@ -5,7 +5,8 @@ interface SceneLoading {
 
 const scene_loading = new CoreScene<SceneLoading>({
     after_loading_wait_time: 0,
-    after_loading_wait_duration: 1000,
+    // after_loading_wait_duration: 1000,
+    after_loading_wait_duration: 0,
 })
 
 scene_loading.start = () => {
@@ -30,7 +31,8 @@ scene_loading.render_ui = () => {
         const p = scene_loading.props
         p.after_loading_wait_time += time.dt
         if (p.after_loading_wait_time > p.after_loading_wait_duration) {
-            scene.change_scene(scene_intro)
+            // scene.change_scene(scene_intro)
+            scene.change_scene(scene_lobby)
         }
     }
 }
