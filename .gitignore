@@ -1,8 +1,8 @@
 *.log
 
 public/main.js
-
 dev/ts_outdir/
+public.zip
 
 node_modules/
 

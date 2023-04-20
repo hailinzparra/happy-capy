@@ -1,0 +1,1 @@
+const G_BASE_CANVAS_HEIGHT = 1080

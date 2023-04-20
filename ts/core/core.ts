@@ -1,18 +1,14 @@
 interface Core {
-    setup(
-        title: string,
-        canvas_parent: Element,
-        starting_scene: CoreScene,
-    ): void
+    init(canvas_parent: Element): void
     stage: CoreStage
     input: CoreInput
-    time: CoreTime
-    draw: CoreDraw
-    scene: CoreSceneManager
-    obj: CoreObjectManager
-    debug: CoreDebug
-    runner: CoreRunner
-    loader: CoreLoader
 }
 
 declare const core: Core
+
+core.init = (canvas_parent) => {
+    canvas_parent.appendChild(core.stage.canvas)
+    setTimeout(() => {
+        core.stage.resize_event()
+    }, 500)
+}

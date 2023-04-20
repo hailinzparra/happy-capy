@@ -1,7 +1,3 @@
-core.setup(
-    'Happy Capy',
-    document.body,
-    scene_loading,
-)
-
-runner.run()
+document.addEventListener('DOMContentLoaded', () => {
+    core.init(document.querySelector('.main-container')!)
+})
