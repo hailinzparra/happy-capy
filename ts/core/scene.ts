@@ -8,11 +8,14 @@ interface CoreSceneManager {
     render_ui(): void
 }
 
-class CoreScene {
+class CoreScene<T = {}> {
     is_auto_clear_stage: boolean = true
     is_obj_update_disabled: boolean = false
     is_obj_render_disabled: boolean = false
-    constructor() { }
+    props: T = {} as any
+    constructor(props?: T) {
+        if (props) this.props = props
+    }
     start() { }
     update() { }
     render() { }

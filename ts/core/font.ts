@@ -37,10 +37,10 @@ class CoreFont {
 
 core.font = {
     xs: new CoreFont(12, '', G_CORE_FONT_DEFAULT_FAMILY),
-    s: new CoreFont(16, '', G_CORE_FONT_DEFAULT_FAMILY),
-    sm: new CoreFont(20, '', G_CORE_FONT_DEFAULT_FAMILY),
-    m: new CoreFont(24, '', G_CORE_FONT_DEFAULT_FAMILY),
-    l: new CoreFont(36, '', G_CORE_FONT_DEFAULT_FAMILY),
-    xl: new CoreFont(48, '', G_CORE_FONT_DEFAULT_FAMILY),
+    s: new CoreFont(18, '', G_CORE_FONT_DEFAULT_FAMILY),
+    sm: new CoreFont(24, '', G_CORE_FONT_DEFAULT_FAMILY),
+    m: new CoreFont(36, '', G_CORE_FONT_DEFAULT_FAMILY),
+    l: new CoreFont(48, '', G_CORE_FONT_DEFAULT_FAMILY),
+    xl: new CoreFont(64, '', G_CORE_FONT_DEFAULT_FAMILY),
     xxl: new CoreFont(96, '', G_CORE_FONT_DEFAULT_FAMILY),
 }

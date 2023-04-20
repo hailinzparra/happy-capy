@@ -11,18 +11,18 @@ core.runner = {
         // core.debug.update()
         core.time.update(t)
         core.scene.update()
-        // if (!core.scene.current_scene.is_obj_update_disabled) {
-        //     core.obj.update_all()
-        // }
-        // if (core.scene.current_scene.is_auto_clear_stage) {
-        //     core.stage.clear()
-        // }
-        // core.scene.render()
-        // if (!core.scene.current_scene.is_obj_render_disabled) {
-        //     core.obj.render_all()
-        //     core.obj.render_ui_all()
-        // }
-        // core.scene.render_ui()
+        if (!core.scene.current_scene.is_obj_update_disabled) {
+            core.obj.update_all()
+        }
+        if (core.scene.current_scene.is_auto_clear_stage) {
+            core.stage.clear_canvas()
+        }
+        core.scene.render()
+        if (!core.scene.current_scene.is_obj_render_disabled) {
+            core.obj.render_all()
+            core.obj.render_ui_all()
+        }
+        core.scene.render_ui()
         core.input.reset()
     },
     run() {

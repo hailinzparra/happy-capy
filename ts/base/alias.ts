@@ -1,11 +1,12 @@
 const {
+    math,
     stage,
     input,
     time,
     font,
     draw,
     scene,
-    // obj,
+    obj,
     // debug,
     runner,
     loader,
