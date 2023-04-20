@@ -10,6 +10,10 @@ interface CoreSceneManager {
 
 class CoreScene<T = {}> {
     is_auto_clear_stage: boolean = true
+    /**
+     * Destroy all obj instance except persistent object on scene change, set this to `false` will make all instances in the given scene persistent
+     */
+    is_auto_destroy_obj: boolean = true
     is_obj_update_disabled: boolean = false
     is_obj_render_disabled: boolean = false
     props: T = {} as any
@@ -26,6 +30,9 @@ core.scene = {
     current_scene: new CoreScene(),
     previous_scene: null,
     change_scene(new_scene) {
+        if (this.current_scene.is_auto_destroy_obj) {
+            core.obj.clear_all()
+        }
         this.previous_scene = this.current_scene
         this.current_scene = new_scene
         if (this.current_scene !== this.previous_scene) {

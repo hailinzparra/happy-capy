@@ -10,10 +10,11 @@ interface CoreObjectManager {
     /**
      * Push instance, give it unique id, and call `start`
      */
-    instantiate<T>(name: string, instance: T): T
+    instantiate<T = CoreObject>(name: string, instance: T): T
     take(...names: string[]): CoreObject[]
     get(id: number): CoreObject | null
     remove(id: number): CoreObject | null
+    clear_all(): void
     nearest(name: string, x: number, y: number): CoreObject | null
 }
 
@@ -35,6 +36,83 @@ class CoreObject {
     inactive_update() { }
     render() { }
     render_ui() { }
+}
+
+class CoreGameObjectAlarm {
+    tick_ms: number
+    interval_ms: number
+    callbacks: Function[] = []
+    constructor(interval_ms: number, is_auto_start: boolean = true) {
+        this.tick_ms = G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER
+        this.interval_ms = interval_ms
+        if (is_auto_start) this.restart()
+    }
+    on_alarm(callback: Function) {
+        this.callbacks.push(callback)
+    }
+    /**
+     * Call at callback to reset alarm
+     */
+    restart() {
+        this.tick_ms = this.interval_ms
+    }
+    update() {
+        if (this.tick_ms === G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER) return
+        if (this.tick_ms < 0) {
+            this.tick_ms = G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER
+            for (let i = 0; i < this.callbacks.length; i++) {
+                this.callbacks[i].call(this)
+            }
+        }
+        else {
+            this.tick_ms -= time.dt
+        }
+    }
+}
+
+class CoreGameObject extends CoreObject {
+    position: CoreVec2
+    /**
+     * Recorded position at the start of pre update before calling `before_update`
+     */
+    previous_position: CoreVec2
+    alarms: { [name: string]: CoreGameObjectAlarm } = {}
+    constructor(position: CoreVec2) {
+        super(0, 0)
+        this.position = position
+        this.previous_position = new CoreVec2(this.position)
+    }
+    create_alarm(name: string, interval_ms: number, callback: Function) {
+        this.alarms[name] = new CoreGameObjectAlarm(interval_ms)
+        this.alarms[name].on_alarm(callback)
+        return this.alarms[name]
+    }
+    before_update() { }
+    after_update() { }
+    alarm_update() {
+        for (const name in this.alarms) {
+            this.alarms[name].update()
+        }
+    }
+    physics_update(dt: number) { }
+    pre_update() {
+        this.previous_position.set(this.position)
+        this.alarm_update()
+        this.before_update()
+        this.physics_update(core.time.scaled_dt)
+    }
+    post_update() {
+        this.after_update()
+    }
+    /**
+     * Returns true if current position plus given margin is outside of the stage
+     */
+    is_outside_stage(xmargin: number = 0, ymargin: number = xmargin): boolean {
+        return this.position.x + xmargin < 0
+            || this.position.x - xmargin > core.stage.size.x
+            || this.position.y + ymargin < 0
+            || this.position.y - ymargin > core.stage.size.y
+    }
 }
 
 core.obj = {
@@ -123,6 +201,11 @@ core.obj = {
             }
         }
         return null
+    },
+    clear_all() {
+        for (let i = this.instances.length - 1; i >= 0; i--) {
+            this.instances[i].length = 0
+        }
     },
     nearest(name, x, y) {
         let l = -1

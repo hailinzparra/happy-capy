@@ -10,17 +10,20 @@ interface Core {
     debug: CoreDebug
     runner: CoreRunner
     loader: CoreLoader
-    init(canvas_parent: Element): void
+    init(canvas_parent: Element): Promise<void>
     start(starting_scene: CoreScene): void
 }
 
 declare const core: Core
 
-core.init = (canvas_parent) => {
+core.init = async (canvas_parent) => {
     canvas_parent.appendChild(core.stage.canvas)
-    setTimeout(() => {
-        core.stage.resize_event()
-    }, 500)
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            core.stage.resize_event()
+            resolve()
+        }, 500)
+    })
 }
 
 core.start = (starting_scene) => {
