@@ -1,7 +1,14 @@
 interface Core {
-    init(canvas_parent: Element): void
+    math: CoreMath
     stage: CoreStage
     input: CoreInput
+    time: CoreTime
+    font: CoreFontManager
+    draw: CoreDraw
+    scene: CoreSceneManager
+    runner: CoreRunner
+    loader: CoreLoader
+    init(canvas_parent: Element): void
 }
 
 declare const core: Core
