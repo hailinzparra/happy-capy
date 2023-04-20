@@ -17,6 +17,7 @@
 'base/alias'
 'base/globals'
 'base/objects/pet'
+'base/objects/food'
 'base/scenes/loading'
 'base/scenes/intro'
 'base/scenes/menu'

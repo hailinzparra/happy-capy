@@ -11,7 +11,7 @@ interface CoreObjectManager {
      * Push instance, give it unique id, and call `start`
      */
     instantiate<T = CoreObject>(name: string, instance: T): T
-    take(...names: string[]): CoreObject[]
+    take<T = CoreObject>(...names: string[]): T[]
     get(id: number): CoreObject | null
     remove(id: number): CoreObject | null
     clear_all(): void
@@ -78,7 +78,7 @@ class CoreGameObject extends CoreObject {
     previous_position: CoreVec2
     alarms: { [name: string]: CoreGameObjectAlarm } = {}
     constructor(position: CoreVec2) {
-        super(0, 0)
+        super(position.x, position.y)
         this.position = position
         this.previous_position = new CoreVec2(this.position)
     }
@@ -102,6 +102,8 @@ class CoreGameObject extends CoreObject {
         this.physics_update(core.time.scaled_dt)
     }
     post_update() {
+        this.x = this.position.x
+        this.y = this.position.y
         this.after_update()
     }
     /**
@@ -176,7 +178,7 @@ core.obj = {
         return n
     },
     take(...names) {
-        let h: CoreObject[] = []
+        let h: any[] = []
         for (const name of names) {
             h = h.concat(this.instances[this.get_index(name)])
         }
