@@ -1,5 +1,6 @@
 interface Core {
     math: CoreMath
+    common: CoreCommon
     events: CoreEvents
     stage: CoreStage
     input: CoreInput
