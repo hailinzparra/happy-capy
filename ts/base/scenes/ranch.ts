@@ -1,13 +1,23 @@
-const scene_lobby = new CoreScene('Lobby')
+interface SceneRanchProps {
+    back_button: HTMLElement
+}
+
+const scene_ranch = new CoreScene<SceneRanchProps>('Ranch', {
+    back_button: dom.q('#ranch-back-button')!,
+})
+
+scene_ranch.props.back_button.onclick = () => {
+    scene.change_scene(scene_menu)
+}
 
 let selected_object: Pet | Food | null = null
 const selected_pos_gap = new CoreVec2()
 
-scene_lobby.start = () => {
+scene_ranch.start = () => {
     obj.instantiate('pet', new Pet(new CoreVec2(math.range(stage.size.x), math.range(stage.size.y))))
 }
 
-scene_lobby.update = () => {
+scene_ranch.update = () => {
     if (selected_object) {
         if (input.pointer_up()) {
             selected_object.xsto = 1.3
@@ -33,5 +43,5 @@ scene_lobby.update = () => {
     }
 }
 
-scene_lobby.render_ui = () => {
+scene_ranch.render_ui = () => {
 }

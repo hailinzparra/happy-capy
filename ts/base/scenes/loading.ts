@@ -11,7 +11,20 @@ scene_loading.start = () => {
 }
 
 scene_loading.render_ui = () => {
-    scene_loading.props.load_progress += (loader.get_load_progress() - scene_loading.props.load_progress) * 0.17
+    scene_loading.props.load_progress += (loader.get_load_progress() - scene_loading.props.load_progress) * 0.18
+
+    try {
+        draw.image('loading_cover', stage.size.x / 2, stage.size.y / 2)
+        draw.ctx.globalCompositeOperation = 'saturation'
+        draw.set_color('hsl(0, 0, 0)')
+        draw.rect(
+            scene_loading.props.load_progress * stage.size.x, 0,
+            stage.size.x - scene_loading.props.load_progress * stage.size.x, stage.size.y
+        )
+        draw.ctx.globalCompositeOperation = 'source-over'
+    }
+    catch { }
+
     const progress_percent = Math.round(scene_loading.props.load_progress * 100)
     const loading_text = `LOADING ${progress_percent}%`
 

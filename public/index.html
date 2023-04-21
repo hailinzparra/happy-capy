@@ -25,16 +25,24 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="main-stage hidden" id="stage-menu">
-                <div id="menu-play-button"></div>
-                <button>Play</button>
-                <button>Load</button>
+                <img id="menu-title" src="assets/images/menu_title.png" alt="">
+                <div id="menu-menu-container">
+                    <div class="btn" id="menu-play-button">Play</div>
+                </div>
+                <div id="menu-choosing-save-container">
+                    <div id="menu-save-button-container">
+                        <div class="btn menu-save-button" menu-save-button-id="1">Save 1</div>
+                        <div class="btn menu-save-button" menu-save-button-id="2">Save 2</div>
+                        <div class="btn menu-save-button" menu-save-button-id="3">Save 3</div>
+                    </div>
+                    <div class="btn" id="menu-back-button">Back</div>
+                </div>
             </div>
-            <div class="main-stage hidden" id="stage-lobby">
-                <button>Pick</button>
-                <button>Food</button>
+            <div class="main-stage hidden" id="stage-ranch">
+                <div class="btn" id="ranch-back-button">Back</div>
             </div>
             <div class="main-stage hidden" id="stage-edit-cage">
-                <button>Back</button>
+                <div class="btn" id="edit-cage-back-button">Back</div>
             </div>
         </div>
     </div>

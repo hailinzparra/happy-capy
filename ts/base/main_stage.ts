@@ -22,8 +22,8 @@ events.on('core_scene_change_scene', ev => {
         case scene_menu:
             main_stage.change(dom.q('.main-stage#stage-menu')!)
             break
-        case scene_lobby:
-            main_stage.change(dom.q('.main-stage#stage-lobby')!)
+        case scene_ranch:
+            main_stage.change(dom.q('.main-stage#stage-ranch')!)
             main_stage.unhide(stage.canvas)
             break
         case scene_edit_cage:
