@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    core.stage.canvas.classList.add('main-stage')
-    await core.init(document.querySelector('.main-container')!)
+    dom.add_class(core.stage.canvas, 'main-stage')
+    await core.init(dom.q('.main-container')!)
     core.start(scene_loading)
 })

@@ -1,18 +1,12 @@
 const main_stage = {
     get_list() {
-        return document.querySelectorAll('.main-stage')
+        return dom.qa('.main-stage')
     },
     unhide(el: Element) {
-        if (el.classList.contains('hidden')) {
-            el.classList.remove('hidden')
-        }
+        dom.remove_class(el, 'hidden')
     },
     hide_all() {
-        this.get_list().forEach(el => {
-            if (!el.classList.contains('hidden')) {
-                el.classList.add('hidden')
-            }
-        })
+        this.get_list().forEach(el => dom.add_class(el, 'hidden'))
     },
     change(el: Element) {
         this.hide_all()
@@ -21,5 +15,22 @@ const main_stage = {
 }
 
 events.on('core_scene_change_scene', ev => {
-    console.log(ev.current_scene.name)
+    switch (ev.current_scene) {
+        case scene_loading:
+            main_stage.change(stage.canvas)
+            break
+        case scene_menu:
+            main_stage.change(dom.q('.main-stage#stage-menu')!)
+            break
+        case scene_lobby:
+            main_stage.change(dom.q('.main-stage#stage-lobby')!)
+            main_stage.unhide(stage.canvas)
+            break
+        case scene_edit_cage:
+            main_stage.change(dom.q('.main-stage#stage-edit-cage')!)
+            main_stage.unhide(stage.canvas)
+            break
+        default:
+            break
+    }
 })

@@ -1,8 +1,8 @@
-interface SceneLoading {
+interface SceneLoadingProps {
     load_progress: number
 }
 
-const scene_loading = new CoreScene<SceneLoading>('Loading', {
+const scene_loading = new CoreScene<SceneLoadingProps>('Loading', {
     load_progress: 0,
 })
 

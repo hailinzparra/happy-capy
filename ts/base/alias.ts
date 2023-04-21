@@ -1,7 +1,8 @@
 const {
+    events,
     math,
     common,
-    events,
+    dom,
     stage,
     input,
     time,

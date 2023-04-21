@@ -1,7 +1,8 @@
 interface Core {
+    events: CoreEvents
     math: CoreMath
     common: CoreCommon
-    events: CoreEvents
+    dom: CoreDOM
     stage: CoreStage
     input: CoreInput
     time: CoreTime
