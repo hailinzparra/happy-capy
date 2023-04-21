@@ -1,23 +1,29 @@
 interface CoreTime {
     t: number
-    dt: number
-    last_time: number
+    udt: number
+    pt: number
     fps: number
-    scaled_dt: number
+    dt: number
     update(t: number): void
 }
 
 core.time = {
     t: 0,
     dt: 0,
-    last_time: 0,
+    /**
+     * Unscaled delta time
+     */
+    udt: 0,
+    /**
+     * Previous time
+     */
+    pt: 0,
     fps: 0,
-    scaled_dt: 0,
     update(t) {
-        this.last_time = this.t
+        this.pt = this.t
         this.t = t
-        this.dt = this.t - this.last_time
-        this.fps = 1000 / this.dt
-        this.scaled_dt = this.dt / (1000 / G_CORE_TIME_BASE_FPS)
+        this.udt = this.t - this.pt
+        this.fps = 1000 / this.udt
+        this.dt = this.udt / (1000 / G_CORE_TIME_BASE_FPS)
     },
 }

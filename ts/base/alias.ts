@@ -1,5 +1,6 @@
 const {
     math,
+    events,
     stage,
     input,
     time,

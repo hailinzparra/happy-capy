@@ -65,7 +65,7 @@ class CoreGameObjectAlarm {
             }
         }
         else {
-            this.tick_ms -= time.dt
+            this.tick_ms -= time.udt
         }
     }
 }
@@ -99,7 +99,7 @@ class CoreGameObject extends CoreObject {
         this.previous_position.set(this.position)
         this.alarm_update()
         this.before_update()
-        this.physics_update(core.time.scaled_dt)
+        this.physics_update(core.time.dt)
     }
     post_update() {
         this.x = this.position.x

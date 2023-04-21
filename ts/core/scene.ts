@@ -8,6 +8,15 @@ interface CoreSceneManager {
     render_ui(): void
 }
 
+interface CoreSceneEventMap {
+    'core_scene_change_scene': {
+        current_scene: CoreScene
+        previous_scene: CoreScene
+    }
+}
+
+interface CoreEventsMap extends CoreSceneEventMap { }
+
 class CoreScene<T = {}> {
     is_auto_clear_stage: boolean = true
     /**
@@ -16,8 +25,10 @@ class CoreScene<T = {}> {
     is_auto_destroy_obj: boolean = true
     is_obj_update_disabled: boolean = false
     is_obj_render_disabled: boolean = false
+    name: string
     props: T = {} as any
-    constructor(props?: T) {
+    constructor(name: string, props?: T) {
+        this.name = name
         if (props) this.props = props
     }
     start() { }
@@ -27,7 +38,7 @@ class CoreScene<T = {}> {
 }
 
 core.scene = {
-    current_scene: new CoreScene(),
+    current_scene: new CoreScene('Dummy'),
     previous_scene: null,
     change_scene(new_scene) {
         if (this.current_scene.is_auto_destroy_obj) {
@@ -38,6 +49,10 @@ core.scene = {
         if (this.current_scene !== this.previous_scene) {
             this.restart()
         }
+        core.events.trigger('core_scene_change_scene', {
+            current_scene: this.current_scene,
+            previous_scene: this.previous_scene,
+        })
     },
     restart() {
         this.current_scene.start()

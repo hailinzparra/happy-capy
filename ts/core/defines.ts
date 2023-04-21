@@ -1,5 +1,9 @@
 declare const __PROD: boolean
 
+interface ObjectOf<T> {
+    [name: string]: T
+}
+
 const CORE_INPUT_KEY_STATUS_TEXT_IDLE = 'IDLE'
 const CORE_INPUT_KEY_STATUS_TEXT_HELD = 'HELD'
 const CORE_INPUT_KEY_STATUS_TEXT_PRESSED = 'PRESSED'
