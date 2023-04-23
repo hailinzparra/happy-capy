@@ -22,8 +22,8 @@ class Food extends CoreGameObject {
         const ys_squish = 0.05 * Math.sin((this.id * 127 + time.t) / 300)
         draw.image_transformed(
             this.image_name,
-            this.x,
-            this.y,
+            this.position.x,
+            this.position.y,
             this.xs,
             this.ys + ys_squish,
             0,

@@ -4,7 +4,7 @@ interface CoreLoader {
     loaded_count: number
     get_is_loaded(): boolean
     get_load_progress(): number
-    set_image_load_event(img: HTMLImageElement): void
+    set_image_load_event(img: HTMLImageElement, callback: Function): void
     load_image(origin: CoreVec2, name: string, src: string): void
     load_strip(origin: CoreVec2, name: string, src: string, image_number: number, image_per_row?: number): void
 }
@@ -19,9 +19,10 @@ core.loader = {
     get_load_progress() {
         return this.load_amount < 1 ? 1 : this.loaded_count / this.load_amount
     },
-    set_image_load_event(img) {
+    set_image_load_event(img, callback) {
         this.load_amount++
         img.addEventListener('load', () => {
+            callback.call(this)
             this.loaded_count++
             if (this.loaded_count >= this.load_amount) {
                 this._is_loaded = true
@@ -31,14 +32,16 @@ core.loader = {
     load_image(origin, name, src) {
         const img = new Image()
         img.src = src
-        core.draw.add_image(origin, name, img)
-        this.set_image_load_event(img)
+        this.set_image_load_event(img, () => {
+            core.draw.add_image(origin, name, img)
+        })
     },
     load_strip(origin, name, src, image_number, image_per_row = 0) {
         image_per_row = image_per_row || image_number
         const img = new Image()
         img.src = src
-        core.draw.add_strip(origin, name, img, image_number, image_per_row)
-        this.set_image_load_event(img)
+        this.set_image_load_event(img, () => {
+            core.draw.add_strip(origin, name, img, image_number, image_per_row)
+        })
     },
 }

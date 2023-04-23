@@ -48,7 +48,7 @@ class Pet extends CoreGameObject {
         this.image_name = this.state.image_name
         this.image_index = 0
         this.image_speed = this.state.image_speed
-        this.image_offset = this.state.image_offset
+        this.image_offset.set(this.state.image_offset)
         if (this.state === this.state_picked) {
             this.walking_points.length = 0
         }
@@ -153,8 +153,8 @@ class Pet extends CoreGameObject {
         draw.strip_transformed(
             this.image_name,
             Math.round(this.image_index),
-            this.x + xoff,
-            this.y + yoff,
+            this.position.x + xoff,
+            this.position.y + yoff,
             this.xs * this.xs_direction_multiplier,
             this.ys + ys_squish,
             this.image_angle_deg,
@@ -163,6 +163,12 @@ class Pet extends CoreGameObject {
     render(): void {
         this.depth = -this.position.y
         this.draw_self()
+        if (this.is_hungry()) {
+            draw.set_color('white')
+            draw.set_font(font.m)
+            draw.set_hvalign('center', 'bottom')
+            draw.text(this.x, this.y - 72, 'Hungry')
+        }
         // draw.set_color('white')
         // draw.set_font(font.m)
         // draw.set_hvalign('center', 'top')
