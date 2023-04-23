@@ -12,10 +12,10 @@ interface CoreObjectManager {
      */
     instantiate<T = CoreObject>(name: string, instance: T): T
     take<T = CoreObject>(...names: string[]): T[]
-    get(id: number): CoreObject | null
+    get<T = CoreObject>(id: number): T | null
     remove(id: number): CoreObject | null
     clear_all(): void
-    nearest(name: string, x: number, y: number): CoreObject | null
+    nearest<T = CoreObject>(name: string, x: number, y: number): T | null
 }
 
 class CoreObject {
@@ -196,7 +196,7 @@ core.obj = {
         for (let i = this.instances.length - 1; i >= 0; i--) {
             for (let j = this.instances[i].length - 1; j >= 0; j--) {
                 if (this.instances[i][j].id === id) {
-                    return this.instances[i][j]
+                    return this.instances[i][j] as any
                 }
             }
         }
@@ -227,6 +227,6 @@ core.obj = {
                 l = o
             }
         }
-        return m
+        return m as any
     },
 }

@@ -19,6 +19,7 @@ class Pet extends CoreGameObject {
     image_speed: number = 1
     walking_points: CoreVec2[] = []
     walking_speed: number = 4
+    hungry: number = 1
     xs: number = 1
     ys: number = 1
     xsto: number = 1
@@ -26,11 +27,15 @@ class Pet extends CoreGameObject {
     xs_direction_multiplier: number = 1
     image_angle_deg: number = 0
     image_offset: CoreVec2 = new CoreVec2()
+    target_food: Food | null = null
     constructor(position: CoreVec2) {
         super(position)
         this.change_state(this.state_idle)
         this.create_alarm('set_random_walking_point', 5000, () => {
-            this.walking_points.push(new CoreVec2(math.range(stage.size.x), math.range(stage.size.y)))
+            if (!this.is_hungry() || !this.target_food) {
+                this.walking_points.push(new CoreVec2(math.range(stage.size.x), math.range(stage.size.y)))
+            }
+            // restart
             let int = 1000 + math.range(2000)
             if (this.alarms['set_random_walking_point'].trigger_count % 5 === 0) {
                 int *= 10
@@ -48,6 +53,9 @@ class Pet extends CoreGameObject {
             this.walking_points.length = 0
         }
     }
+    is_hungry() {
+        return this.hungry < 0.5
+    }
     update(): void {
         this.xs += (this.xsto - this.xs) * 0.5
         this.ys += (this.ysto - this.ys) * 0.5
@@ -60,6 +68,9 @@ class Pet extends CoreGameObject {
         if (Math.abs(1 - this.ysto) < 0.05) this.ysto = 1
 
         this.image_angle_deg *= 0.9
+
+        this.hungry -= time.dt / 1000
+        if (this.hungry < 0) this.hungry = 0
 
         switch (this.state) {
             case this.state_picked:
@@ -77,7 +88,13 @@ class Pet extends CoreGameObject {
                 }
                 break
             case this.state_eating:
+                this.hungry += time.dt / 100
+                if (this.hungry > 1) this.hungry = 1
                 if (this.image_index > 12) {
+                    if (this.target_food) {
+                        obj.remove(this.target_food.id)
+                        this.target_food = null
+                    }
                     this.change_state(this.state_idle)
                 }
                 break
@@ -105,6 +122,23 @@ class Pet extends CoreGameObject {
                 }
                 break
             default:
+                if (this.is_hungry()) {
+                    if (this.target_food === null) {
+                        const nearest_food = obj.nearest<Food>('food', this.position.x, this.position.y)
+                        if (nearest_food) {
+                            this.target_food = nearest_food
+                        }
+                    }
+                    if (this.target_food) {
+                        if (math.distance(this.position.x, this.position.y, this.target_food.x, this.target_food.y) < 10) {
+                            this.change_state(this.state_eating)
+                            return
+                        }
+                        else {
+                            this.walking_points.push(this.target_food.position)
+                        }
+                    }
+                }
                 if (this.walking_points.length > 0) {
                     this.change_state(this.state_walking)
                 }
@@ -114,19 +148,29 @@ class Pet extends CoreGameObject {
     draw_self() {
         this.image_index += time.dt * this.image_speed
         const ys_squish = 0.05 * Math.sin((this.id * 127 + time.t) / 300)
+        const xoff = (this.image_offset.x * draw.strips[this.image_name].image_width) || 0
+        const yoff = (this.image_offset.y * draw.strips[this.image_name].image_height) || 0
         draw.strip_transformed(
             this.image_name,
             Math.round(this.image_index),
-            this.x + this.image_offset.x * draw.strips[this.image_name].image_width,
-            this.y + this.image_offset.y * draw.strips[this.image_name].image_height,
+            this.x + xoff,
+            this.y + yoff,
             this.xs * this.xs_direction_multiplier,
             this.ys + ys_squish,
             this.image_angle_deg,
         )
     }
     render(): void {
+        this.depth = -this.position.y
         this.draw_self()
-        // draw.text(this.x, this.y + 40, this.state.name)
+        // draw.set_color('white')
+        // draw.set_font(font.m)
+        // draw.set_hvalign('center', 'top')
+        // draw.text(this.x, this.y + 20, this.state.name + `${this.is_hungry() ? ' + hungry' : ''}`)
+        // draw.set_color('black')
+        // draw.rect(this.x - 50, this.y + 80, 100, 20)
+        // draw.set_color('white')
+        // draw.rect(this.x - 50, this.y + 80, 100 * this.hungry, 20)
     }
 }
 
