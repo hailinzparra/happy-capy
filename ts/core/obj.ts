@@ -42,6 +42,7 @@ class CoreGameObjectAlarm {
     tick_ms: number
     interval_ms: number
     callbacks: Function[] = []
+    trigger_count: number = 0
     constructor(interval_ms: number, is_auto_start: boolean = true) {
         this.tick_ms = G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER
         this.interval_ms = interval_ms
@@ -53,16 +54,20 @@ class CoreGameObjectAlarm {
     /**
      * Call at callback to reset alarm
      */
-    restart() {
-        this.tick_ms = this.interval_ms
+    restart(interval_ms: number = this.interval_ms) {
+        this.tick_ms = interval_ms
+    }
+    trigger() {
+        for (let i = 0; i < this.callbacks.length; i++) {
+            this.callbacks[i].call(this)
+        }
+        this.trigger_count++
     }
     update() {
         if (this.tick_ms === G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER) return
         if (this.tick_ms < 0) {
             this.tick_ms = G_CORE_GAME_OBJECT_ALARM_DEACTIVATE_NUMBER
-            for (let i = 0; i < this.callbacks.length; i++) {
-                this.callbacks[i].call(this)
-            }
+            this.trigger()
         }
         else {
             this.tick_ms -= time.udt
@@ -86,6 +91,9 @@ class CoreGameObject extends CoreObject {
         this.alarms[name] = new CoreGameObjectAlarm(interval_ms)
         this.alarms[name].on_alarm(callback)
         return this.alarms[name]
+    }
+    restart_alarm(name: string, interval_ms?: number) {
+        this.alarms[name].restart(interval_ms)
     }
     before_update() { }
     after_update() { }

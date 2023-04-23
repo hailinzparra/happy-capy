@@ -26,6 +26,7 @@
 'base/scenes/ranch'
 'base/scenes/edit_cage'
 'base/scenes/shop'
+'base/scenes/lobby'
 'base/main_stage'
 'base/load'
 'base/entrypoint'

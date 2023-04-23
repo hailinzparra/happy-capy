@@ -42,6 +42,7 @@ scene_loading.render_ui = () => {
     draw.text(stage.size.x / 2, stage.size.y - bar_h / 2 + bar_h * 0.075, loading_text)
 
     if (loader.get_is_loaded() && progress_percent >= 100) {
-        scene.change_scene(scene_menu)
+        // scene.change_scene(scene_menu)
+        scene.change_scene(scene_ranch)
     }
 }

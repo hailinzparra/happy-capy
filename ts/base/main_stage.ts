@@ -30,6 +30,14 @@ events.on('core_scene_change_scene', ev => {
             main_stage.change(dom.q('.main-stage#stage-edit-cage')!)
             main_stage.unhide(stage.canvas)
             break
+        case scene_shop:
+            main_stage.change(dom.q('.main-stage#stage-shop')!)
+            main_stage.unhide(stage.canvas)
+            break
+        case scene_lobby:
+            main_stage.change(dom.q('.main-stage#stage-lobby')!)
+            main_stage.unhide(stage.canvas)
+            break
         default:
             break
     }
