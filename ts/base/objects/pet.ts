@@ -107,8 +107,8 @@ class Pet extends CoreGameObject {
                     }
                     else {
                         const angle_dif = Math.atan2(target.y - this.position.y, target.x - this.position.x)
-                        this.position.x += Math.cos(angle_dif) * this.walking_speed
-                        this.position.y += Math.sin(angle_dif) * this.walking_speed
+                        this.position.x += Math.cos(angle_dif) * this.walking_speed * time.dt
+                        this.position.y += Math.sin(angle_dif) * this.walking_speed * time.dt
                         if (this.position.x < this.previous_position.x) {
                             this.xs_direction_multiplier = -1
                         }
